@@ -1,10 +1,15 @@
 "use client";
 
 import type { ComponentProps } from "react";
-import { Streamdown } from "streamdown";
+import { Streamdown, defaultRehypePlugins, type StreamdownProps } from "streamdown";
+import { Spoiler } from "@/components/spoiler";
+import rehypeSpoiler from "@/lib/rehype-spoiler";
 import { cn } from "@/lib/utils";
 
 type ResponseProps = ComponentProps<typeof Streamdown>;
+
+const rehypePlugins = [...Object.values(defaultRehypePlugins), rehypeSpoiler];
+const components = { spoiler: Spoiler } as StreamdownProps["components"];
 
 export function Response({ className, children, ...props }: ResponseProps) {
   return (
@@ -14,6 +19,8 @@ export function Response({ className, children, ...props }: ResponseProps) {
         className
       )}
       {...props}
+      components={components}
+      rehypePlugins={rehypePlugins}
     >
       {children}
     </Streamdown>
